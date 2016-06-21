@@ -1,0 +1,123 @@
+[[local|localrc]]
+
+# use TryStack git mirror
+GIT_BASE=http://git.trystack.cn
+NOVNC_REPO=http://git.trystack.cn/kanaka/noVNC.git
+SPICE_REPO=http://git.trystack.cn/git/spice/spice-html5.git
+
+#OFFLINE=True
+RECLONE=True
+
+# Define images to be automatically downloaded during the DevStack built process.
+DOWNLOAD_DEFAULT_IMAGES=False
+IMAGE_URLS="http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img"
+
+HOST_IP=192.168.27.128
+
+
+# Credentials
+DATABASE_PASSWORD=pass
+ADMIN_PASSWORD=pass
+SERVICE_PASSWORD=pass
+SERVICE_TOKEN=pass
+RABBIT_PASSWORD=pass
+
+HORIZON_BRANCH=stable/mitaka
+KEYSTONE_BRANCH=stable/mitaka
+NOVA_BRANCH=stable/mitaka
+NEUTRON_BRANCH=stable/mitaka
+GLANCE_BRANCH=stable/mitaka
+CINDER_BRANCH=stable/mitaka
+
+
+#keystone
+KEYSTONE_TOKEN_FORMAT=UUID
+
+##Heat
+HEAT_BRANCH=stable/mitaka
+enable_service h-eng h-api h-api-cfn h-api-cw
+
+
+# Enabling Neutron (network) Service
+disable_service n-net
+enable_service q-svc
+enable_service q-agt
+enable_service q-dhcp
+enable_service q-l3
+enable_service q-meta
+enable_service q-metering
+enable_service neutron
+
+## Neutron options
+Q_USE_SECGROUP=True
+FLOATING_RANGE="192.168.27.0/24"
+FIXED_RANGE="10.0.0.0/24"
+Q_FLOATING_ALLOCATION_POOL=start=192.168.27.102,end=192.168.27.110
+PUBLIC_NETWORK_GATEWAY="192.168.27.2"
+Q_L3_ENABLED=True
+PUBLIC_INTERFACE=eth0
+Q_USE_PROVIDERNET_FOR_PUBLIC=True
+OVS_PHYSICAL_BRIDGE=br-ex
+PUBLIC_BRIDGE=br-ex
+OVS_BRIDGE_MAPPINGS=public:br-ex
+
+# #VLAN configuration.
+Q_PLUGIN=ml2
+ENABLE_TENANT_VLANS=True
+
+# Logging
+LOGFILE=/opt/stack/logs/stack.sh.log
+VERBOSE=True
+LOG_COLOR=True
+SCREEN_LOGDIR=/opt/stack/logs
+
+########
+# CEPH #
+########
+enable_plugin ceph http://git.trystack.cn/openstack/devstack-plugin-ceph
+
+# DevStack will create a loop-back disk formatted as XFS to store the
+# Ceph data.
+CEPH_LOOPBACK_DISK_SIZE=10G
+
+# Ceph cluster fsid
+CEPH_FSID=$(uuidgen)
+
+# Glance pool, pgs and user
+GLANCE_CEPH_USER=glance
+GLANCE_CEPH_POOL=images
+GLANCE_CEPH_POOL_PG=8
+GLANCE_CEPH_POOL_PGP=8
+
+# Nova pool and pgs
+NOVA_CEPH_POOL=vms
+NOVA_CEPH_POOL_PG=8
+NOVA_CEPH_POOL_PGP=8
+
+# Cinder pool, pgs and user
+CINDER_CEPH_POOL=volumes
+CINDER_CEPH_POOL_PG=8
+CINDER_CEPH_POOL_PGP=8
+CINDER_CEPH_USER=cinder
+CINDER_CEPH_UUID=$(uuidgen)
+
+# Cinder backup pool, pgs and user
+CINDER_BAK_CEPH_POOL=backup
+CINDER_BAK_CEPH_POOL_PG=8
+CINDER_BAKCEPH_POOL_PGP=8
+CINDER_BAK_CEPH_USER=cinder-bak
+
+# How many replicas are to be configured for your Ceph cluster
+CEPH_REPLICAS=${CEPH_REPLICAS:-1}
+
+# Connect DevStack to an existing Ceph cluster
+REMOTE_CEPH=False
+REMOTE_CEPH_ADMIN_KEY_PATH=/etc/ceph/ceph.client.admin.keyring
+
+
+#################################
+# CINDER - BLOCK DEVICE SERVICE #
+#################################
+ENABLED_SERVICES+=,cinder,c-api,c-vol,c-sch,c-bak
+CINDER_DRIVER=ceph
+CINDER_ENABLED_BACKENDS=ceph
