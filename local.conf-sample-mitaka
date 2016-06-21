@@ -24,7 +24,7 @@ NOVA_BRANCH=stable/mitaka
 NEUTRON_BRANCH=stable/mitaka
 GLANCE_BRANCH=stable/mitaka
 CINDER_BRANCH=stable/mitaka
-HEAT_BRANCH=stable/mitaka
+
 
 #keystone
 KEYSTONE_TOKEN_FORMAT=UUID
