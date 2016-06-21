@@ -8,6 +8,10 @@ SPICE_REPO=http://git.trystack.cn/git/spice/spice-html5.git
 #OFFLINE=True
 RECLONE=True
 
+# Define images to be automatically downloaded during the DevStack built process.
+DOWNLOAD_DEFAULT_IMAGES=False
+IMAGE_URLS="http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img"
+
 HOST_IP=192.168.27.128
 
 
