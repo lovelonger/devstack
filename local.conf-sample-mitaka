@@ -33,6 +33,17 @@ CINDER_BRANCH=stable/mitaka
 #keystone
 KEYSTONE_TOKEN_FORMAT=UUID
 
+##Heat
+HEAT_BRANCH=stable/mitaka
+enable_service h-eng h-api h-api-cfn h-api-cw
+
+
+## Swift
+SWIFT_BRANCH=stable/mitaka
+ENABLED_SERVICES+=,s-proxy,s-object,s-container,s-account
+SWIFT_REPLICAS=1
+SWIFT_HASH=011688b44136573e209e
+
 
 # Enabling Neutron (network) Service
 disable_service n-net
